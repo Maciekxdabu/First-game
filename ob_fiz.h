@@ -15,4 +15,16 @@ public:
     friend bool czy_kol(ob_fiz*, ob_fiz*);
 };
 
+class Interaktywne :public ob_fiz /// klasa bazowa zwiazana z obiektami interaktywnymi (obsluguje obiekty z ktorymi gracz moze wejsc w interakcje)
+{
+protected:
+
+
+public:
+    Interaktywne();
+    ~Interaktywne();
+
+    friend bool czy_kol(ob_fiz*, ob_fiz*);
+};
+
 bool czy_kol(ob_fiz*, ob_fiz*);
