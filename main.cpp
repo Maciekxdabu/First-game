@@ -2,8 +2,12 @@
 
 using namespace std;
 
+Pokoj *pokoj;
+
 int main()
 {
+    pokoj = new [2]Pokoj;
+    
     sf::RenderWindow okno(sf::VideoMode(500, 500, 32), "Gra");
 
     while (okno.isOpen())
@@ -14,6 +18,11 @@ int main()
             if (zdarzenie.type == sf::Event::Closed)
             {
                 okno.close();
+            }
+            
+            if (zdarzenie.type == sf::Event::KeyPressed && zdarzenie.key == sf::Keyboard::E) /// zdarzenie wykrywajace interakcje
+            {
+                ;
             }
         }
 
