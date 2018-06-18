@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 class ob_fiz  /// klasa bazowa pod inne dzialajace na zasadzie interakcji miedzy soba
 {
@@ -28,3 +29,16 @@ public:
 };
 
 bool czy_kol(ob_fiz*, ob_fiz*);
+
+class Pokoj /// klasa odpowiedzialna za optymalizacje (mniejsze obliczenia)
+{
+protected:
+    std::vector<Interaktywne> interakcje;
+    // wstawic pozniej klase postaci (ogolna)
+
+public:
+    Pokoj();
+    Pokoj(int);
+    ~Pokoj();
+    void inicjalizacja(Interaktywne);
+};
