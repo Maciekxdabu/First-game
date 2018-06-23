@@ -2,11 +2,11 @@
 
 using namespace std;
 
-Pokoj *pokoj;
+Pokoj *pokoj; /// wskaźnik do stworzenia tablicy pokoi (różne dla danego poziomu)
 
 int main()
 {
-    pokoj = new [2]Pokoj;
+    pokoj = new [2]Pokoj; /// przykładowa inicjalizacja
     
     sf::RenderWindow okno(sf::VideoMode(500, 500, 32), "Gra");
 
