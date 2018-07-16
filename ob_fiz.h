@@ -14,11 +14,15 @@ protected:
     float x, y;
     float szerokosc, wysokosc;
     //int warstwa;
+    sf::Vector2 predkosc; /// wektor przechowujacy dane o predkosci w ktora porusza sie obiekt
+    int maxx, maxy; /// maksymalne wartosci jakie moze przyjac predkosc (const ???)
+    char tag; /// przechowuje wartosc tag odrozniajaca obiekty (jak 'm' dla moba, czy 'f' dla obiektu fizycznego)
 
 public:
     ob_fiz();
     ~ob_fiz();
     void wyrownaj(ob_fiz*); // wyrownuje obiekt na podstawie drugiego obiektu (kolizja fizyczna)
+    char getTag(); /// zwraca tag
 
     friend bool czy_kol(ob_fiz*, ob_fiz*);
 };
