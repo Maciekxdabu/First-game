@@ -4,6 +4,8 @@ using namespace std;
 
 Pokoj *pokoj; /// wskaźnik do stworzenia tablicy pokoi (różne dla danego poziomu)
 
+segment mapa[10][10];
+
 int main()
 {
     pokoj = new [2]Pokoj; /// przykładowa inicjalizacja
