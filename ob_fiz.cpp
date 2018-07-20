@@ -49,25 +49,6 @@ Interaktywne::~Interaktywne()
     ;
 }
 
-// -------------------------------------------------------------------------------------------------------- klasa Pokoj
-
-Pokoj::Pokoj()
-{
-    ;
-}
-
-Pokoj::Pokoj(int i)
-{
-    ;
-}
-
-Pokoj::~Pokoj()
-{
-    ;
-}
-
-
-
 
 bool czy_kol(ob_fiz *ob1, ob_fiz *ob2)
 {
