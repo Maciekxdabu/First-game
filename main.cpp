@@ -2,14 +2,13 @@
 
 using namespace std;
 
-Pokoj *pokoj; /// wskaźnik do stworzenia tablicy pokoi (różne dla danego poziomu)
+int segment::width = 100;
+int segment::height = 100;
 
 segment mapa[10][10];
 
 int main()
-{
-    pokoj = new [2]Pokoj; /// przykładowa inicjalizacja
-    
+{   
     sf::RenderWindow okno(sf::VideoMode(500, 500, 32), "Gra");
 
     while (okno.isOpen())
