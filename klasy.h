@@ -70,6 +70,3 @@ public:
     void dodaj(ob_fiz*); /// dodaje nowy element z segmentu
     void usun(); /// usuwa element z segmentu ---TO DO---
 };
-
-int segment::width = 100;
-int segment::height = 100;
