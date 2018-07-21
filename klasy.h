@@ -13,12 +13,13 @@ class ob_fiz  /// klasa bazowa pod inne dzialajace na zasadzie interakcji miedzy
 {
 protected:
     float x, y;
-    float szerokosc, wysokosc;
+    float szerokosc, wysokosc; /// wspolrzedne i wielkosci odpowiedzialne za wykrywanie kolizji
     //int warstwa;
     sf::Vector2f predkosc; /// wektor przechowujacy dane o predkosci w ktora porusza sie obiekt
     int maxx, maxy; /// maksymalne wartosci jakie moze przyjac predkosc (const ???)
     Tag tag; /// przechowuje wartosc tag odrozniajaca obiekty (jak 'm' dla moba, czy 'f' dla obiektu fizycznego)
     sf::Sprite obraz; /// obraz obiektu fizycznego
+    sf::Texture tekstura; /// i jego tekstura
 
 public:
     ob_fiz();
@@ -53,19 +54,17 @@ public:
 
 protected:
     std::vector<ob_fiz*> zawartosc; /// zbior elementow w segmencie mapy
-    std::vector<ob_fiz*> moby;
-    std::vector<ob_fiz*> pozostale;
     bool czy_zawiera; /// czy segment jest czescia mapy
+    sf::Sprite obraz;
+    sf::Texture tekstura;
+    int x, y; /// wspolrzedne segmentu w mapie
 
 public:
-    segment();
+    segment(std::string, int, int);
     ~segment();
     int getIlosc(); /// zwraca ilosc elementow w segmencie mapy
     ob_fiz* getObiekt(int); /// zwraca obiekt o podanym indeksie
-    int getIloscMob(); /// zwraca ilosc mobow w segmencie mapy
-    ob_fiz* getMob(int); /// zwraca moba o podanym indeksie
-    int getIloscPoz(); /// zwraca ilosc pozostalych w segmencie mapy
-    ob_fiz* getPoz(int); /// zwraca pozostaly o podanym indeksie
+    sf::Sprite getObraz(); /// zwraca obiekt Sprite do wyswietlenia w oknie
 
     void dodaj(ob_fiz*); /// dodaje nowy element z segmentu
     void usun(); /// usuwa element z segmentu ---TO DO---
