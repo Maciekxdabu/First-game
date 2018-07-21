@@ -36,6 +36,31 @@ void ob_fiz::wyrownaj(ob_fiz* ob)
     }
 }
 
+Tag ob_fiz::getTag()
+{
+    return tag;
+}
+
+void ob_fiz::addVector(int xx, int yy)
+{
+    predkosc.x += xx;
+    if (predkosc.x > maxx)
+        predkosc.x = maxx;
+    else if (predkosc.x < maxx*-1)
+        predkosc.x = maxx*-1;
+
+    predkosc.y += yy;
+    if (predkosc.y > maxy)
+        predkosc.y = maxy;
+    else if (predkosc.y < maxy*-1)
+        predkosc.y = maxy*-1;
+}
+
+void ob_fiz::ruch()
+{
+    obraz.move(predkosc);
+}
+
 
 // -------------------------------------------------------------------------------------------------------- klasa Interaktywne
 
