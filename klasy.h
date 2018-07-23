@@ -1,13 +1,25 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-enum Tag
+enum Tag /// zmienne typu Tag odpowiadają przede wszystkim za odróżnianie poszczególnych klas
 {
     mob,
     statyczny,
     interaktywny,
-    NONE
+    NONE,
+    gracz,
+    shelf,
+    granica
 };
+enum Kier /// zmienna typu Kier odpowiedzialna jest za zapamietywanie kierunkow
+{
+    gora,
+    dol,
+    lewo,
+    prawo
+};
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------- klasa ob_fiz
 
 class ob_fiz  /// klasa bazowa pod inne dzialajace na zasadzie interakcji miedzy soba
 {
@@ -22,15 +34,19 @@ protected:
     sf::Texture tekstura; /// i jego tekstura
 
 public:
-    ob_fiz();
+    ob_fiz(float, float, float, float, float, float, std::string);
     ~ob_fiz();
     virtual void wyrownaj(ob_fiz*); // wyrownuje obiekt na podstawie drugiego obiektu (kolizja)
     Tag getTag(); /// zwraca tag
+    sf::Vector2f getSpeed();
+    sf::Vector2f getPos();
     void addVector(int=0, int=0);
     void ruch();
 
     friend bool czy_kol(ob_fiz*, ob_fiz*);
 };
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------- klasa Interaktywne
 
 class Interaktywne :public ob_fiz /// klasa bazowa zwiazana z obiektami interaktywnymi (obsluguje obiekty z ktorymi gracz moze wejsc w interakcje)
 {
@@ -38,13 +54,15 @@ protected:
 
 
 public:
-    Interaktywne();
+    Interaktywne(float, float, float, float, float, float, std::string);
     ~Interaktywne();
 
     friend bool czy_kol(ob_fiz*, ob_fiz*);
 };
 
 bool czy_kol(ob_fiz*, ob_fiz*);
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------ klasa segment
 
 class segment
 {
@@ -68,4 +86,46 @@ public:
 
     void dodaj(ob_fiz*); /// dodaje nowy element z segmentu
     void usun(); /// usuwa element z segmentu ---TO DO---
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------ klasa Granica
+
+class Granica :public ob_fiz
+{
+protected:
+    Kier kierunek;
+
+public:
+    Granica(float, float, float, float, float, float, std::string, Kier);
+    ~Granica();
+    Kier getKier();
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------ klasa Postac
+
+class Postac :public ob_fiz
+{
+protected:
+    int HP, MAXHP;
+    std::string imie;
+
+public:
+    Postac(float, float, float, float, float, float, std::string);
+    ~Postac();
+    virtual void wyrownaj(Granica);
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------ klasa Player
+
+class Player :public Postac
+{
+protected:
+    int EXP, MAXEXP;
+    int LV;
+
+public:
+    Player(float, float, float, float, float, float, std::string);
+    ~Player();
+    bool checkLV(); /// zwraca czy postac moze wylewelowac
+    void LVup();
 };
