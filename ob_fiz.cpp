@@ -2,9 +2,17 @@
 
 // --------------------------------------------------------------------------------------------------------- klasa ob_fiz
 
-ob_fiz::ob_fiz()
+ob_fiz::ob_fiz(float px, float py, float kx, float ky, float ks, float kw, std::string adres)
 {
-    ;
+    obraz.setPosition(px, py);
+
+    x = kx;
+    y = ky;
+    szerokosc = ks;
+    wysokosc = kw;
+
+    tekstura.loadFromFile(adres);
+    obraz.setTexture(tekstura);
 }
 
 ob_fiz::~ob_fiz()
@@ -61,18 +69,17 @@ void ob_fiz::ruch()
     obraz.move(predkosc);
 }
 
-
-// -------------------------------------------------------------------------------------------------------- klasa Interaktywne
-
-Interaktywne::Interaktywne()
+sf::Vector2f ob_fiz::getSpeed()
 {
-    ;
+    return predkosc;
 }
 
-Interaktywne::~Interaktywne()
+sf::Vector2f ob_fiz::getPos()
 {
-    ;
+    return obraz.getPosition();
 }
+
+
 
 
 bool czy_kol(ob_fiz *ob1, ob_fiz *ob2)
