@@ -6,13 +6,18 @@ ob_fiz::ob_fiz(float px, float py, float kx, float ky, float ks, float kw, std::
 {
     obraz.setPosition(px, py);
 
-    x = kx;
-    y = ky;
+    x += kx;
+    y += ky;
     szerokosc = ks;
     wysokosc = kw;
 
-    tekstura.loadFromFile(adres);
-    obraz.setTexture(tekstura);
+    if (adres != "")
+    {
+        tekstura.loadFromFile(adres);
+        obraz.setTexture(tekstura);
+    }
+
+    tag = NONE;
 }
 
 ob_fiz::~ob_fiz()
@@ -49,7 +54,7 @@ Tag ob_fiz::getTag()
     return tag;
 }
 
-void ob_fiz::addVector(int xx, int yy)
+void ob_fiz::addVector(float xx, float yy)
 {
     predkosc.x += xx;
     if (predkosc.x > maxx)
@@ -78,6 +83,21 @@ sf::Vector2f ob_fiz::getPos()
 {
     return obraz.getPosition();
 }
+
+sf::Sprite ob_fiz::getObraz()
+{
+    return obraz;
+}
+
+
+
+
+Kier ob_fiz::getKier()
+{
+    return kierunek;
+}
+
+
 
 
 
