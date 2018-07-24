@@ -3,7 +3,8 @@
 Player::Player(float px, float py, float kx, float ky, float ks, float kw, std::string adres)
 :Postac(px, py, kx, ky, ks, kw, adres)
 {
-    tag = gracz;
+    maxx = 2;
+    maxy = 2;
 }
 
 Player::~Player()
