@@ -1,6 +1,6 @@
 #include "klasy.h"
 
-Player::Player(float px, float py, float kx, float ky, float ks, float kw, std::string adres)
+Player::Player(float px, float py, float kx, float ky, float ks, float kw, std::string adres, int s)
 :Postac(px, py, kx, ky, ks, kw, adres)
 {
     maxx = 2;
