@@ -7,6 +7,12 @@ segment::segment(std::string adres_obrazu, int xx, int yy)
     obraz.setPosition(xx*width, yy*height);
     x = xx;
     y = yy;
+    
+    ilosc_postaci = 0;
+    ilosc_statycznych = 0;
+    ilosc_interaktywnych = 0;
+    ilosc_pozostalych = 0;
+    ilosc_granic = 0;
 }
 
 segment::~segment()
@@ -16,17 +22,30 @@ segment::~segment()
 
 int segment::getIlosc()
 {
-    return zawartosc.getLenght();
+    return zawartosc.size();
 }
 
-int segment::getObiekt(int n)
+int segment::getObiekt(int n, Tag t)
 {
-    return zawartosc[n];
+    int i=0;
+
+    do
+    {
+        if (typ[zawartosc[i]] == t)
+        {
+            if (n == 0)
+                return zawartosc[i];
+            else
+                n--;
+        }
+        i++;
+    }
+    while (true);
 }
 
 void segment::dodaj(ob_fiz* ob)
 {
-    zawartosc.push_back(ob);
+    zawartosc.push_back(ob->getID());
     
     switch (ob->getTag())
     {
