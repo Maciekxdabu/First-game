@@ -1,0 +1,11 @@
+mapa testowa
+3
+1 0
+img/obraz3.png
+0 1
+img/obraz1.png
+1 1
+img/obraz2.png
+2
+0 2
+2 1

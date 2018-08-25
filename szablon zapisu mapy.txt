@@ -1,0 +1,13 @@
+nazwa mapy
+ilosc segmentow
+*pêtla:
+ -wspolrzedne 'x' i 'y' segmentu
+ -adres grafiki segmentu
+iloœæ ³¹czeñ miêdzy segmentami
+*pêtla:
+ -indeks pierwszego segmentu                     wspolrzedne 'x' i 'y' pierwszego segmentu
+ -indeks drugiego segmentu                       wspolrzedne 'x' i 'y' drugiego segmentu
+*pêtla:
+ -ilosc elementów w segmencie o indeksie 'i'
+ *pêtla:
+  -kolejne elementy w segmencie
