@@ -10,6 +10,9 @@ ob_fiz::ob_fiz(float px, float py, float kx, float ky, float ks, float kw, std::
     y += ky;
     szerokosc = ks;
     wysokosc = kw;
+    
+    maxx = 0;
+    maxy = 0;
 
     if (adres != "")
     {
@@ -17,36 +20,15 @@ ob_fiz::ob_fiz(float px, float py, float kx, float ky, float ks, float kw, std::
         obraz.setTexture(tekstura);
     }
 
-    tag = NONE;
+    //tag = NONE;
+    
+    ID = maxID;
+    maxID++;
 }
 
 ob_fiz::~ob_fiz()
 {
     ;
-}
-
-void ob_fiz::wyrownaj(ob_fiz* ob)
-{
-    if (czy_kol(this, ob) == true) /// czy szybkosc wplynie mocno na to ????????
-    {
-        if (x + szerokosc <= ob->x + ob->szerokosc/2)
-        {
-            x = ob->x - szerokosc;
-        }
-        else if (x > ob->x + ob->szerokosc/2)
-        {
-            x = ob->x + ob->szerokosc;
-        }
-
-        if (y + wysokosc <= ob->y + ob->wysokosc)
-        {
-            y = ob->y - wysokosc;
-        }
-        else if (y > ob->y + ob->wysokosc/2)
-        {
-            y = ob->y + ob->wysokosc;
-        }
-    }
 }
 
 Tag ob_fiz::getTag()
@@ -72,6 +54,8 @@ void ob_fiz::addVector(float xx, float yy)
 void ob_fiz::ruch()
 {
     obraz.move(predkosc);
+    x += predkosc.x;
+    y += predkosc.y;
 }
 
 sf::Vector2f ob_fiz::getSpeed()
@@ -89,12 +73,19 @@ sf::Sprite ob_fiz::getObraz()
     return obraz;
 }
 
-
-
-
-Kier ob_fiz::getKier()
+int ob_fiz::getID()
 {
-    return kierunek;
+    return ID;
+}
+
+sf::Vector2f ob_fiz::getKolPos()
+{
+    return sf::Vector2f(x, y);
+}
+
+sf::Vector2f ob_fiz::getWym()
+{
+    return sf::Vector2f(szerokosc, wysokosc);
 }
 
 
@@ -102,9 +93,25 @@ Kier ob_fiz::getKier()
 
 
 
+
+/*
 bool czy_kol(ob_fiz *ob1, ob_fiz *ob2)
 {
     if (ob1->x + ob1->szerokosc >= ob2->x && ob1->x <= ob2->x + ob2->szerokosc && ob1->y + ob1->wysokosc >= ob2->y && ob1->y <= ob2->y + ob2->wysokosc)
+        return true;
+    else
+        return false;
+}*/
+
+
+bool ob_fiz::czy_kol(ob_fiz *ob1, ob_fiz *ob2)
+{
+    sf::Vector2f wym1 = ob1->getWym();
+    sf::Vector2f wym2 = ob2->getWym();
+    sf::Vector2f kol1 = ob1->getKolPos();
+    sf::Vector2f kol2 = ob2->getKolPos();
+
+    if (kol1.x + wym1.x >= kol2.x && kol1.x <= kol2.x + wym2.x && kol1.y + wym1.y >= kol2.y && kol1.y <= kol2.y + wym2.y)
         return true;
     else
         return false;
