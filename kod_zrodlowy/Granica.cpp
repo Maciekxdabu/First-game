@@ -11,9 +11,8 @@ Granica::~Granica()
 {
     ;
 }
-/*
+
 Kier Granica::getKier()
 {
     return kierunek;
 }
-*/
