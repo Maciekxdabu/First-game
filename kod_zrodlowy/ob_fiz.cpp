@@ -1,4 +1,4 @@
-#include "ob_fiz.h"
+#include "klasy.h"
 
 // --------------------------------------------------------------------------------------------------------- klasa ob_fiz
 
@@ -6,8 +6,8 @@ ob_fiz::ob_fiz(float px, float py, float kx, float ky, float ks, float kw, std::
 {
     obraz.setPosition(px, py);
 
-    x += kx;
-    y += ky;
+    x = px + kx;
+    y = py + ky;
     szerokosc = ks;
     wysokosc = kw;
     
