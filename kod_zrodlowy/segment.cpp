@@ -1,4 +1,4 @@
-#include "segment.h"
+#include "klasy.h"
 
 segment::segment(std::string adres_obrazu, int xx, int yy)
 {
