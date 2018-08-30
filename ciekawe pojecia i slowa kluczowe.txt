@@ -1,0 +1,5 @@
+extern - zmienne mo¿na poprzeæ tym s³owem kluczowym jê¿eli s¹ one zadeklarowane globalnie w innym pliku
+template<class T> - od tego mo¿na zacz¹æ tworzyæ szablon klasy lub funkcji (gdzie typ zmiennej okreœlony jest przez 'T'), zamiast pisaæ wielokrotnie to samo
+enum X {...}; - poprzez enum tworzymy zmienn¹ typu 'X' która przyjmuje wartoœci podane w nawiasach
+struct X {...}; - poprzez struct tworzymu struktórê danych zawartych w nawiasach (np. wizytówka z³orzona ze: string imie, int telefon itd.)
+static - tym s³owem kluczowym mo¿na poprzeæ zmienn¹ lub funkcjê w klasie jak równie¿ sam¹ klasê, mówi ono ¿e istnieje tylko jeden egzemplarz danej wartoœci (zmienna jest sta³a dla wszytskich obiektów, a funkcjemaj¹ bezpoœredni dostêp do prywatnych argumentów zarówno w klasie bazowej jak i tych dziedzicz¹cej po niej), dostê do tych danych i funkcji uzyskujemy poprzez operator nazwy: nazwa_klasy::nazwa_funkcji/zmiennej
