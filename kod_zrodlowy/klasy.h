@@ -45,7 +45,7 @@ extern slownik<Tag> typ; /// zapis mowi ze zmienna jest zadeklarowana ale w inne
 extern sf::View widok_G;
 extern sf::RenderWindow okno;
 extern Player bohater;
-
+extern sf::Font czcionka;
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------- klasa ob_fiz
 
@@ -208,7 +208,30 @@ public:
     friend Drzwi;
 };
 
+// ------------------------------------------------------------------------------------------------------------------------------------------------------ klasa GUI
+
+class GUI_class /// klasa odpowiedzialna za renderowanie panelu GUI
+{
+protected:
+    sf::RenderTexture ostateczna_textura;
+    sf::Sprite koncowy;
+    sf::Texture tekstury;
+    sf::Text napisy;
+    int HP, maxHP;
+    std::string nazwa;
+
+    void reload();
+
+public:
+    GUI_class(int, int);
+    ~GUI_class();
+    sf::Sprite getObraz();
+    void updHP(int, int=-1);
+
+};
+
 
 //deklaracje ponizszych w funkcje.cpp
 void wyrownaj(Postac*, Granica*);
-
+int StrToInt(std::string);
+std::string IntToStr(int);
