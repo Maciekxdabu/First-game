@@ -27,11 +27,17 @@ vector<int> lacz1, lacz2;
 sf::View widok_G(sf::Vector2f(100, 500), sf::Vector2f(1000, 1000));
 sf::RenderWindow okno(sf::VideoMode(1000, 1000, 32), "Gra");
 
+sf::Font czcionka;
+
 // --------------------------------------------------------------------------------------------------------- funkcja main
 
 int main()
 {
     okno.setView(widok_G);
+    
+    czcionka.loadFromFile("arial.ttf");
+
+    GUI_class GUI(50, 100);
 
 // --------------------------------------------------------------------------------------------------------- wczytywanie mapy
 
@@ -211,6 +217,10 @@ int main()
         okno.draw(drzwi2.getObraz());
 
         okno.draw(bohater.getObraz());
+        
+        okno.setView(okno.getDefaultView());
+        okno.draw(GUI.getObraz());
+        okno.setView(widok_G);
 
         //for (int i=0; i<interaktywne.ilosc(); i++)
             //okno.draw(interaktywne[])
