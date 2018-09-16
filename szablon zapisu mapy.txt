@@ -7,6 +7,9 @@ ilosc laczen miedzy segmentami
 *petla:
  -indeks pierwszego segmentu                     wspolrzedne 'x' i 'y' pierwszego segmentu
  -indeks drugiego segmentu                       wspolrzedne 'x' i 'y' drugiego segmentu
+ 
+ <<<<---- dotąd na razie jest kod (aktualnie nie ma wczytywania obiektów z pliku mapy)
+ 
 *petla:
  -ilosc elementów w segmencie o indeksie 'i'
  *petla:
