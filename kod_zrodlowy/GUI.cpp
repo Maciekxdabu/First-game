@@ -37,7 +37,6 @@ void GUI_class::reload()
 sf::Sprite GUI_class::getObraz()
 {
     reload();
-    koncowy.setPosition(0,0);
     return koncowy;
 }
 
