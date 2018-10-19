@@ -10,7 +10,7 @@ ob_fiz::ob_fiz(float px, float py, float kx, float ky, float ks, float kw, std::
     y = py + ky;
     szerokosc = ks;
     wysokosc = kw;
-    
+
     maxx = 0;
     maxy = 0;
 
@@ -21,7 +21,7 @@ ob_fiz::ob_fiz(float px, float py, float kx, float ky, float ks, float kw, std::
     }
 
     //tag = NONE;
-    
+
     ID = maxID;
     maxID++;
 }
@@ -88,20 +88,30 @@ sf::Vector2f ob_fiz::getWym()
     return sf::Vector2f(szerokosc, wysokosc);
 }
 
-
-
-
-
-
-
-/*
-bool czy_kol(ob_fiz *ob1, ob_fiz *ob2)
+sf::Vector2i ob_fiz::getSeg()
 {
-    if (ob1->x + ob1->szerokosc >= ob2->x && ob1->x <= ob2->x + ob2->szerokosc && ob1->y + ob1->wysokosc >= ob2->y && ob1->y <= ob2->y + ob2->wysokosc)
-        return true;
+    return seg;
+}
+
+sf::Vector2i ob_fiz::checkSeg()
+{
+    sf::Vector2i nowy( floor( (obraz.getPosition().x + szerokosc/2)/segment::width ), floor( (obraz.getPosition().y + wysokosc/2)/segment::height ) );
+
+    if (nowy.x != seg.x || nowy.y != seg.y)
+        return nowy;
     else
-        return false;
-}*/
+        return sf::Vector2i(-1, -1);
+}
+
+void ob_fiz::setSeg(sf::Vector2i b)
+{
+    seg = b;
+}
+
+
+
+
+
 
 
 bool ob_fiz::czy_kol(ob_fiz *ob1, ob_fiz *ob2)
@@ -115,4 +125,9 @@ bool ob_fiz::czy_kol(ob_fiz *ob1, ob_fiz *ob2)
         return true;
     else
         return false;
+}
+
+int ob_fiz::getMaxID()
+{
+    return maxID;
 }
