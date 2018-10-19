@@ -1,16 +1,16 @@
 nazwa mapy
+wymiary maksymalne mapy (x,y)
 ilosc segmentow
-*petla:
+*pętla: (i)
  -wspolrzedne 'x' i 'y' segmentu
  -adres grafiki segmentu
-ilosc laczen miedzy segmentami
-*petla:
- -indeks pierwszego segmentu                     wspolrzedne 'x' i 'y' pierwszego segmentu
- -indeks drugiego segmentu                       wspolrzedne 'x' i 'y' drugiego segmentu
- 
- <<<<---- dotąd na razie jest kod (aktualnie nie ma wczytywania obiektów z pliku mapy)
- 
-*petla:
- -ilosc elementów w segmencie o indeksie 'i'
- *petla:
-  -kolejne elementy w segmencie
+ilość łączeń między segmentami
+*pętla: (i)
+ -indeks pierwszego segmentu                     //wspolrzedne 'x' i 'y' pierwszego segmentu
+ -indeks drugiego segmentu                       //wspolrzedne 'x' i 'y' drugiego segmentu
+
+*pętla: (i < ilosc_segmentow)
+ -ilosc obiektow w segmencie
+ *pętla (j < ilosc_obiektow)
+  -typ obiektu
+  -dane obiektu
