@@ -6,8 +6,6 @@ Player::Player(float px, float py, float kx, float ky, float ks, float kw, std::
     maxx = 2;
     maxy = 2;
     
-    numer_segmentu = s;
-
     interakcja = false;
 }
 
@@ -64,14 +62,9 @@ void Player::reset()
     mozliwe = -1;
 }
 
-void Player::zmien_segment(int s)
-{
-    numer_segmentu = s;
-}
-
 int Player::getSegment()
 {
-    return numer_segmentu;
+    return wspolrzedne[seg.x][seg.y];
 }
 
 int Player::getInt()
