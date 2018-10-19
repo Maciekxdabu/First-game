@@ -1,5 +1,6 @@
 #include "klasy.h"
 #include <fstream>
+#include <windows.h>
 
 using namespace std;
 
@@ -14,7 +15,16 @@ int segmentow;
 int laczen;
 
 vector<segment*> mapa;
+int szer, wys;
+int **wspolrzedne;
 string nazwa_mapy="";
+
+/*
+map<char, Tag> typ;
+map<char, Granica*> granice;
+map<char, Postac*> postacie;
+map<char, Interaktywne*> interaktywne;
+*/
 
 slownik<Tag> typ;
 slownik<Granica*> granice;
@@ -29,15 +39,18 @@ sf::RenderWindow okno(sf::VideoMode(1000, 1000, 32), "Gra");
 
 sf::Font czcionka;
 
+bool is_pause_on = false;
+
 // --------------------------------------------------------------------------------------------------------- funkcja main
 
 int main()
 {
     okno.setView(widok_G);
-    
+
     czcionka.loadFromFile("arial.ttf");
 
     GUI_class GUI(50, 100);
+    Menu_class Menu;
 
 // --------------------------------------------------------------------------------------------------------- wczytywanie mapy
 
@@ -46,9 +59,19 @@ int main()
 
     getline(plik, nazwa_mapy);
 
+    plik >> szer >> wys;
+    wspolrzedne = new int*[szer];
+    for (int i=0; i<szer; i++)
+        wspolrzedne[i] = new int[wys];
+    for (int i=0; i<szer; i++)
+    {
+        for (int j=0; j<wys; j++)
+            wspolrzedne[i][j] = -1;
+    }
+
     plik >> segmentow;
 
-    for (int i=0; i<segmentow; i++)
+    for (int i=0; i<segmentow; i++) /// wczytywanie segmentow
     {
         int x, y;
         string adres;
@@ -56,11 +79,12 @@ int main()
         plik >> y;
         plik >> adres;
         mapa.push_back(new segment(adres, x, y));
+        wspolrzedne[x][y] = mapa.size()-1;
     }
 
     plik >> laczen;
 
-    for (int i=0; i<laczen; i++)
+    for (int i=0; i<laczen; i++) /// wczytywanie laczen
     {
         int p, d;
         plik >> p;
@@ -69,41 +93,74 @@ int main()
         lacz2.push_back(d);
     }
 
+    for (int i=0; i<segmentow; i++) /// wczytywanie obiektow
+    {
+        int obiektow;
+        plik >> obiektow;
+        for (int j=0; j<obiektow; j++)
+        {
+            Tag typ_obiektu;
+            int b;
+            plik >> b;
+            typ_obiektu = (Tag)b;
+
+            switch (typ_obiektu)
+            {
+            case granica:
+                {
+                    sf::Vector2f polozenie;
+                    int dlugosc;
+                    Kier kierunek;
+                    plik >> polozenie.x;
+                    plik >> polozenie.y;
+                    plik >> dlugosc;
+                    plik >> b;
+                    kierunek = (Kier)b;
+
+                    Granica *bufor;
+                    if (kierunek == gora || kierunek == dol)
+                        bufor = new Granica(polozenie.x, polozenie.y, 0, 0, dlugosc, 0, "", kierunek);
+                    else
+                        bufor = new Granica(polozenie.x, polozenie.y, 0, 0, 0, dlugosc, "", kierunek);
+
+                    mapa[i]->dodaj(bufor);
+                    granice.dodaj(bufor->getID(), bufor);
+                    typ.dodaj(bufor->getID(), granica);
+
+                    break;
+                }
+            /*case postac:
+                Postac *bufor = new Postac();
+
+                break;*/
+            case interaktywny:
+                {
+                    sf::Vector2f polozenie, cel;
+                    std::string adres;
+                    plik >> polozenie.x >> polozenie.y;
+                    plik >> cel.x >> cel.y;
+                    plik >> adres;
+                    //cout << adres << endl;
+
+                    Drzwi *bufor;
+
+                    bufor = new Drzwi(polozenie.x, polozenie.y, 0, 0, 100, 200, adres, cel.x, cel.y);
+
+                    mapa[i]->dodaj(bufor);
+                    interaktywne.dodaj(bufor->getID(), bufor);
+                    typ.dodaj(bufor->getID(), interaktywny);
+
+                    break;
+                }
+            }
+        }
+    }
+
     plik.close();
 
     mapa[1]->dodaj(&bohater);
     postacie.dodaj(bohater.getID(), &bohater);
     typ.dodaj(bohater.getID(), bohater.getTag());
-
-    Granica podloga(3, 797, 0, 0, 797, 0, "", dol);
-
-    mapa[1]->dodaj(&podloga);
-    granice.dodaj(podloga.getID(), &podloga);
-    typ.dodaj(podloga.getID(), podloga.getTag());
-
-    Granica sciana1(3, 397, 0, 0, 0, 397, "", lewo);
-
-    mapa[1]->dodaj(&sciana1);
-    granice.dodaj(sciana1.getID(), &sciana1);
-    typ.dodaj(sciana1.getID(), sciana1.getTag());
-
-    Granica sciana2(797, 397, 0, 0, 0, 397, "", prawo);
-
-    mapa[2]->dodaj(&sciana2);
-    granice.dodaj(sciana2.getID(), &sciana2);
-    typ.dodaj(sciana2.getID(), sciana2.getTag());
-
-    Drzwi drzwi1(50, 600, 0, 0, 100, 200, "img/drzwi.png", 550, 650);
-
-    mapa[1]->dodaj(&drzwi1);
-    interaktywne.dodaj(drzwi1.getID(), &drzwi1);
-    typ.dodaj(drzwi1.getID(), drzwi1.getTag());
-
-    Drzwi drzwi2(500, 600, 0, 0, 100, 200, "img/drzwi.png", 100, 650);
-
-    mapa[2]->dodaj(&drzwi2);
-    interaktywne.dodaj(drzwi2.getID(), &drzwi2);
-    typ.dodaj(drzwi2.getID(), drzwi2.getTag());
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------------------------- poczatek petli okna
 
@@ -126,6 +183,79 @@ int main()
                 }
             }
 
+// --------------------------------------------------------------------------------------------------------- manu pauzy
+
+            if (zdarzenie.type == sf::Event::KeyPressed && zdarzenie.key.code == sf::Keyboard::Escape)
+            {
+                is_pause_on = true;
+                //okno.setView(okno.getDefaultView());
+                //okno.draw(Menu.getObraz());
+                //okno.setView(widok_G);
+                //okno.display();
+                while (is_pause_on == true)
+                {
+                    while (okno.pollEvent(zdarzenie))
+                    {
+                        ;
+
+                        if (zdarzenie.type == sf::Event::KeyPressed)
+                        {
+                            if (zdarzenie.key.code == sf::Keyboard::Escape)
+                            {
+                                is_pause_on = false;
+                                break;
+                            }
+
+                            if (zdarzenie.key.code == sf::Keyboard::Down)
+                                Menu.w_dol();
+                            if (zdarzenie.key.code == sf::Keyboard::Up)
+                                Menu.w_gore();
+
+                            if (zdarzenie.key.code == sf::Keyboard::Return) /// Enter
+                            {
+                                switch (Menu.getTyp())
+                                {
+                                case glowne:
+                                    switch (Menu.getWybrane())
+                                    {
+                                    case 0:
+                                        is_pause_on = false;
+                                        break;
+                                    case 3:
+                                        return 0;
+                                        break;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    okno.clear(sf::Color::White);
+
+                    for (int i=0; i<mapa.size(); i++)
+                        okno.draw(mapa[i]->getObraz());
+
+                    for (int i=0; i<mapa.size(); i++)
+                    {
+                        for (int j=0; j<mapa[i]->getInt(); j++)
+                            okno.draw( interaktywne[mapa[i]->getObiekt(j, interaktywny)]->getObraz() );
+                    }
+
+                    //okno.draw(drzwi1.getObraz());
+                    //okno.draw(drzwi2.getObraz());
+
+                    okno.draw(bohater.getObraz());
+
+                    okno.setView(okno.getDefaultView());
+                    okno.draw(GUI.getObraz());
+                    okno.draw(Menu.getObraz());
+                    okno.setView(widok_G);
+
+                    okno.display();
+                }
+            }
+
 // --------------------------------------------------------------------------------------------------------- sterowanie postacia
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -141,6 +271,27 @@ int main()
 // --------------------------------------------------------------------------------------------------------- grawitacja obiektow
 
         bohater.addVector(0, 0.0025);
+
+// --------------------------------------------------------------------------------------------------------- ruch obiektow
+
+        bohater.ruch();
+
+// --------------------------------------------------------------------------------------------------------- sprawdzanie zmiany segmentu
+
+        for (int i=0; i<segmentow; i++)
+        {
+            for (int j=0; j<mapa[i]->getPos(); j++)
+            {
+                int bid = mapa[i]->getObiekt(j, postac);
+                sf::Vector2i nowy = postacie[ bid ]->checkSeg();
+                if ( nowy.x != -1 )
+                {
+                    mapa[i]->usun( bid );
+                    mapa[ wspolrzedne[nowy.x][nowy.y] ]->dodaj( postacie[ bid ] );
+                    postacie[ bid ]->setSeg(nowy);
+                }
+            }
+        }
 
 // --------------------------------------------------------------------------------------------------------- sprawdzanie kolizji
 
@@ -173,10 +324,6 @@ int main()
             }
         }
 
-// --------------------------------------------------------------------------------------------------------- ruch obiektow
-
-        bohater.ruch();
-
 // --------------------------------------------------------------------------------------------------------- sprawdzanie interakcji
 
         bohater.reset();
@@ -208,16 +355,22 @@ int main()
 
 // --------------------------------------------------------------------------------------------------------- odswierzenie okna
 
-        okno.clear(sf::Color::Black);
+        okno.clear(sf::Color::White);
 
         for (int i=0; i<mapa.size(); i++)
             okno.draw(mapa[i]->getObraz());
 
-        okno.draw(drzwi1.getObraz());
-        okno.draw(drzwi2.getObraz());
+        //okno.draw(drzwi1.getObraz());
+        //okno.draw(drzwi2.getObraz());
+
+        for (int i=0; i<mapa.size(); i++)
+        {
+            for (int j=0; j<mapa[i]->getInt(); j++)
+                okno.draw( interaktywne[mapa[i]->getObiekt(j, interaktywny)]->getObraz() );
+        }
 
         okno.draw(bohater.getObraz());
-        
+
         okno.setView(okno.getDefaultView());
         okno.draw(GUI.getObraz());
         okno.setView(widok_G);
