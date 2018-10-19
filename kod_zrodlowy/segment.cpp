@@ -7,7 +7,7 @@ segment::segment(std::string adres_obrazu, int xx, int yy)
     obraz.setPosition(xx*width, yy*height);
     x = xx;
     y = yy;
-    
+
     ilosc_postaci = 0;
     ilosc_statycznych = 0;
     ilosc_interaktywnych = 0;
@@ -29,6 +29,9 @@ int segment::getObiekt(int n, Tag t)
 {
     int i=0;
 
+    if (t == NONE)
+        return zawartosc[n];
+
     do
     {
         if (typ[zawartosc[i]] == t)
@@ -39,6 +42,9 @@ int segment::getObiekt(int n, Tag t)
                 n--;
         }
         i++;
+
+        if (i >= zawartosc.size())
+            return -1;
     }
     while (true);
 }
@@ -46,7 +52,7 @@ int segment::getObiekt(int n, Tag t)
 void segment::dodaj(ob_fiz* ob)
 {
     zawartosc.push_back(ob->getID());
-    
+
     switch (ob->getTag())
     {
     case postac:
@@ -65,6 +71,37 @@ void segment::dodaj(ob_fiz* ob)
         ilosc_pozostalych++;
         break;
     }
+}
+
+void segment::usun(int id)
+{
+    for (int i=0; i<zawartosc.size(); i++)
+    {
+        if (zawartosc[i] == id)
+        {
+            zawartosc.erase(zawartosc.begin()+i);
+
+            switch (typ[id])
+            {
+            case postac:
+                ilosc_postaci--;
+                break;
+            case interaktywny:
+                ilosc_interaktywnych--;
+                break;
+            case statyczny:
+                ilosc_statycznych--;
+                break;
+            case granica:
+                ilosc_granic--;
+                break;
+            default:
+                ilosc_pozostalych--;
+                break;
+            }
+        }
+    }
+    return;
 }
 
 sf::Sprite segment::getObraz()
