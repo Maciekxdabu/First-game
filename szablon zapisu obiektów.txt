@@ -1,0 +1,14 @@
+*legenda:
+- dla ka¿dego obiektu
+- raz dla wszystkich obiektów danego typu (np. wspólna grafika)
+
+
+granica:
+-po³o¿enie (x,y)
+-kierunek
+-d³ugoœæ granicy
+
+drzwi:
+-po³o¿enie (x,y)
+-wspó³rzêdne celu (x,y)
+---adres grafiki
