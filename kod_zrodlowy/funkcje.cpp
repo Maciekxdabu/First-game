@@ -42,6 +42,22 @@ void wyrownaj(Postac* p, Granica* g)
         }
     }
 }
+
+int StrToInt(std::string n)
+{
+    int l;
+    std::istringstream iss(n);
+    iss >> l;
+    return l;
+}
+
+std::string IntToStr(int l)
+{
+    std::ostringstream ss;
+    ss << l;
+    return ss.str();
+}
+
 /*
 bool czy_kol(Player* g, Interaktywne* i)
 {
