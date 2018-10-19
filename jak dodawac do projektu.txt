@@ -1,0 +1,11 @@
+klasa obiektu interaktywnego:
+-dziedziczy po klasie Interakcji
+-posiada virtual void interakcja() odpowiadajaca za jej dzialanie w razie interakcji
+-inne zmienne czy funkcje w niej zawarte [zeby nie przekazywac argumentow interakcji()]
+-dodac obiekt we wczytywaniu z mapy
+
+nowy obiekt fizyczny:
+-dziedziczy po klasie opartej na podobnym dzialaniu lub bezposrednio od ob_fiz
+-dodanie go do petli interakcji jezeli obiekt jest "fizyczny"
+-jezeli wymagany jest nowy kontener (slownik) na obiekt to dodac jego rysowanie na ekranie w postaci petli obiektow tego typu
+-dodac obiekt we wczytywaniu z mapy
