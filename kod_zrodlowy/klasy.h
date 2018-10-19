@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <sstream>
+#include <math.h>
 
 class ob_fiz;
 class Interaktywne;
@@ -15,6 +17,7 @@ enum Tag /// zmienne typu Tag odpowiadaj¹ przede wszystkim za odró¿nianie pos
     interaktywny,
     postac,
     granica,
+    drzwi,
     NONE
 };
 enum Kier /// zmienna typu Kier odpowiedzialna jest za zapamietywanie kierunkow
@@ -41,11 +44,26 @@ public:
     int ilosc();
 };
 
+enum typ_przedmiotu
+{
+    crafting_component,
+    other
+};
+
+struct szablon_przedmiotu
+{
+    std::string nazwa;
+    sf::Texture tekstura;
+    typ_przedmiotu tag;
+};
+
 extern slownik<Tag> typ; /// zapis mowi ze zmienna jest zadeklarowana ale w innej czesci kodu ( w tym przypadku w main)
 extern sf::View widok_G;
 extern sf::RenderWindow okno;
 extern Player bohater;
 extern sf::Font czcionka;
+extern int **wspolrzedne;
+
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------- klasa ob_fiz
 
@@ -54,6 +72,8 @@ class ob_fiz  /// klasa bazowa pod inne dzialajace na zasadzie interakcji miedzy
 protected:
     float x, y;
     float szerokosc, wysokosc; /// wspolrzedne i wielkosci odpowiedzialne za wykrywanie kolizji
+    sf::Vector2i seg; /// wspolredne segmentu w ktorym znajduje sie obiekt
+    //int warstwa;
     sf::Vector2f predkosc; /// wektor przechowujacy dane o predkosci w ktora porusza sie obiekt
     int maxx, maxy; /// maksymalne wartosci jakie moze przyjac predkosc (const ???)
     Tag tag; /// przechowuje wartosc tag odrozniajaca obiekty (jak 'm' dla moba, czy 'f' dla obiektu fizycznego)
@@ -76,8 +96,12 @@ public:
     int getID();
     sf::Vector2f getKolPos();
     sf::Vector2f getWym();
+    sf::Vector2i getSeg();
+    sf::Vector2i checkSeg();
+    void setSeg(sf::Vector2i);
 
     static bool czy_kol(ob_fiz*, ob_fiz*);
+    static int getMaxID();
 
     friend void wyrownaj(Postac*, Granica*);
 };
@@ -94,6 +118,9 @@ public:
     Interaktywne(float, float, float, float, float, float, std::string);
     ~Interaktywne();
     virtual void interakcja()=0;
+
+    //friend bool Player::czy_interakcja(Interaktywne*);
+    //friend bool czy_kol(Player*, Interaktywne*);
 };
 
 class Drzwi :public Interaktywne
@@ -131,7 +158,7 @@ public:
     segment(std::string, int, int);
     ~segment();
     int getIlosc(); /// zwraca ilosc elementow w segmencie mapy
-    int getObiekt(int, Tag); /// zwraca ID obiektu o numerze int (podanego tagu)
+    int getObiekt(int, Tag=NONE); /// zwraca ID obiektu o numerze int (podanego tagu) (zwraca -1 w przypadku bledu/nie-znalezienia)
     sf::Sprite getObraz(); /// zwraca obiekt Sprite do wyswietlenia w oknie
     int getPos();
     int getStat();
@@ -140,7 +167,7 @@ public:
     int getGran();
 
     void dodaj(ob_fiz*); /// dodaje nowy element z segmentu
-    void usun(); /// usuwa element z segmentu ---TO DO---
+    void usun(int); /// usuwa element o podanym ID z segmentu
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------ klasa Granica
@@ -184,9 +211,10 @@ class Player :public Postac
 protected:
     int EXP, MAXEXP;
     int LV;
+    //sf::Rect pole_interakcji; /// pole zwiazane z wykrywaniem interakcji
     int mozliwe; /// ID do obiektu z mozliwa interakcja
     bool interakcja;
-    int numer_segmentu;
+    //int numer_segmentu;
 
     void teleportacja(float, float); /// teleportuje gracza w wybrane miejsce (tylko klasy i funkcje zaprzyjaznione)
 
@@ -197,7 +225,7 @@ public:
     void LVup();
     void ruch();
     void czy_interakcja(Interaktywne*);
-    void zmien_segment(int);
+    //void zmien_segment(int);
     int getSegment();
     int getInt();
 
@@ -230,8 +258,39 @@ public:
 
 };
 
+// ------------------------------------------------------------------------------------------------------------------------------------------------------ klasa menu
+
+enum okienko /// jaka czesc menu ma byc teraz wyswietlona
+{
+    glowne, opcje, koniec, nowa, wczytaj, zapisz
+};
+
+class Menu_class /// klasa odpowiadajaca za poruszanie sie po roznych menu
+{
+protected:
+    sf::RenderTexture plotno;
+    sf::Sprite obraz;
+    okienko aktualne;
+    sf::Text tekst;
+    int wybrane, maksymalne;
+    std::string gl[4];
+
+    void reload();
+
+public:
+    Menu_class();
+    ~Menu_class();
+    sf::Sprite getObraz();
+    void w_gore();
+    void w_dol();
+    int getWybrane();
+    void zmien(okienko); /// zmiana plaszczyzny (maksymalnej ilosci wyborow)
+    okienko getTyp();
+};
+
 
 //deklaracje ponizszych w funkcje.cpp
 void wyrownaj(Postac*, Granica*);
+//bool czy_kol(Player*, Interaktywne*);
 int StrToInt(std::string);
 std::string IntToStr(int);
