@@ -1,4 +1,5 @@
 # First-game
+### 1.0.1 Alfa
 
 Amatorska gra bazowana na bibliotece SFML
 
