@@ -6,6 +6,9 @@ using namespace std;
 
 Player bohater(100, 500, 0, 0, 100, 100, "img/gracz.png", 1);
 
+sf::Clock timer;
+sf::Time deltaTime;
+
 int segment::width = 400;
 int segment::height = 400;
 
@@ -162,10 +165,14 @@ int main()
     postacie.dodaj(bohater.getID(), &bohater);
     typ.dodaj(bohater.getID(), bohater.getTag());
 
+    timer.restart();
+
 // ----------------------------------------------------------------------------------------------------------------------------------------------------------------- poczatek petli okna
 
     while (okno.isOpen())
     {
+        deltaTime = timer.restart();
+
         sf::Event zdarzenie;
         while (okno.pollEvent(zdarzenie))
         {
@@ -255,22 +262,22 @@ int main()
                     okno.display();
                 }
             }
+        }
 
 // --------------------------------------------------------------------------------------------------------- sterowanie postacia
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                bohater.addVector(0.1);
+                bohater.addVector(2.5);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                bohater.addVector(-0.1);
+                bohater.addVector(-2.5);
             }
-        }
 
 // --------------------------------------------------------------------------------------------------------- grawitacja obiektow
 
-        bohater.addVector(0, 0.0025);
+        bohater.addVector(0, 1);
 
 // --------------------------------------------------------------------------------------------------------- ruch obiektow
 
@@ -297,14 +304,21 @@ int main()
 
 //wyrownaj(postacie[ mapa[lacz1[i]]->getObiekt(j, postac) ], granice[ mapa[lacz1[i]]->getObiekt(k, granica) ]);
 
+        for (int i=0; i<segmentow; i++)
+        {
+            for (int j=0; j<mapa[i]->getPos(); j++)
+            {
+                for (int k=0; k<mapa[i]->getGran(); k++)
+                {
+                    wyrownaj(postacie[ mapa[i]->getObiekt(j, postac) ], granice[ mapa[i]->getObiekt(k, granica) ]);
+                }
+            }
+        }
+
         for (int i=0; i<laczen; i++)
         {
             for (int j=0; j<mapa[lacz1[i]]->getPos(); j++)
             {
-                for (int k=0; k<mapa[lacz1[i]]->getGran(); k++)
-                {
-                    wyrownaj(postacie[ mapa[lacz1[i]]->getObiekt(j, postac) ], granice[ mapa[lacz1[i]]->getObiekt(k, granica) ]);
-                }
                 for (int k=0; k<mapa[lacz2[i]]->getGran(); k++)
                 {
                     wyrownaj(postacie[ mapa[lacz1[i]]->getObiekt(j, postac) ], granice[ mapa[lacz2[i]]->getObiekt(k, granica) ]);
@@ -316,10 +330,6 @@ int main()
                 for (int k=0; k<mapa[lacz1[i]]->getGran(); k++)
                 {
                     wyrownaj(postacie[ mapa[lacz2[i]]->getObiekt(j, postac) ], granice[ mapa[lacz1[i]]->getObiekt(k, granica) ]);
-                }
-                for (int k=0; k<mapa[lacz2[i]]->getGran(); k++)
-                {
-                    wyrownaj(postacie[ mapa[lacz2[i]]->getObiekt(j, postac) ], granice[ mapa[lacz2[i]]->getObiekt(k, granica) ]);
                 }
             }
         }
