@@ -63,6 +63,7 @@ extern sf::RenderWindow okno;
 extern Player bohater;
 extern sf::Font czcionka;
 extern int **wspolrzedne;
+extern sf::Time deltaTime;
 
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------- klasa ob_fiz
