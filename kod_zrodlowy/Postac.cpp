@@ -14,7 +14,7 @@ Postac::~Postac()
 
 void Postac::addVector(float xx, float yy)
 {
-    ob_fiz::addVector(xx, yy);
+    ob_fiz::addVector(xx*deltaTime.asSeconds(), yy*deltaTime.asSeconds());
 
     if (predkosc.x >= 0.001)
     {
@@ -23,6 +23,10 @@ void Postac::addVector(float xx, float yy)
     else if (predkosc.x <= -0.001)
     {
         predkosc.x += 0.001;
+    }
+    else
+    {
+        predkosc.x = 0;
     }
 }
 
