@@ -11,8 +11,6 @@ class Granica;
 class Postac;
 class Player;
 
-// Maly test dzialania github desktop
-
 enum Tag /// zmienne typu Tag odpowiadaj¹ przede wszystkim za odró¿nianie poszczególnych klas
 {
     statyczny,
